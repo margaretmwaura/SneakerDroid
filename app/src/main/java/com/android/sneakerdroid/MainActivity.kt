@@ -10,12 +10,19 @@ import android.content.pm.PackageManager
 import android.R.attr.versionName
 import android.content.pm.PackageInfo
 import android.R.attr.versionCode
+import android.util.Log
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 
 
 class MainActivity : AppCompatActivity()
 {
     var versionCode : Int  = 0
     var versionName : String = " "
+
+    private val viewModel: RegisterViewModel by lazy {
+        ViewModelProviders.of(this).get(RegisterViewModel::class.java)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding : ActivityMainBinding = DataBindingUtil.setContentView(this,R.layout.activity_main)
@@ -43,10 +50,17 @@ class MainActivity : AppCompatActivity()
             val deviceDetails = DeviceDetails(deviceModel,deviceType)
             val participant = Participant(fname,lname,phonenumber,getString(R.string.project_code),versionCode,fcmKey,deviceDetails)
 
+            viewModel.registerUser(participant)
 
         }
 
 
+        viewModel.response.observe(this, Observer {
+            it.let {
+                val accestoken = it.accessToken
+                Log.d("AccessToke","This is the access token ${accestoken}")
+            }
+        })
 
     }
 }

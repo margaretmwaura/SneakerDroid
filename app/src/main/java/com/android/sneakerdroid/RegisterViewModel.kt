@@ -13,10 +13,10 @@ class RegisterViewModel  : ViewModel()
 {
 
     // The internal MutableLiveData String that stores the most recent response
-    private val _response = MutableLiveData<String>()
+    private val _response = MutableLiveData<RegistrationResults>()
 
     // The external immutable LiveData for the response String
-    val response: LiveData<String>
+    val response: LiveData<RegistrationResults>
         get() = _response
 
     // Create a Coroutine scope using a job to be able to cancel when needed
@@ -29,21 +29,21 @@ class RegisterViewModel  : ViewModel()
      * Call getMarsRealEstateProperties() on init so we can display status immediately.
      */
     init {
-        registerUser()
+
     }
 
     /**
      * Sets the value of the response LiveData to the Mars API status or the successful number of
      * Mars properties retrieved.
      */
-    private fun registerUser() {
+    public fun registerUser(participant: Participant) {
         coroutineScope.launch {
             // Get the Deferred object for our Retrofit request
-//            var eventlistresponse = Retr.makeRetrofitService().getEventTypeData("event_types")
+            val participant = RetrofitFactory.makeRetrofitService().getEventTypeData(participant)
             try {
                 // Await the completion of our Retrofit request
-//                var listResult = eventlistresponse.await()
-//                _response.value = listResult
+                var listResult = participant.await()
+                _response.value = listResult
             } catch (e: Exception) {
                 Log.d("Error","There was a huge error ${e.message}")
             }
