@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity()
             val phonenumber = ccp.fullNumberWithPlus
             val deviceModel = binding.deviceModel.text.toString()
             val deviceType = binding.deviceType.text.toString()
-            val fcmKey = Integer.parseInt(getString(R.string.fcm_key))
+            val fcmKey = 579988450106
 
             val deviceDetails = DeviceDetails(deviceModel,deviceType)
             val participant = Participant(fname,lname,phonenumber,getString(R.string.project_code),versionCode,fcmKey,deviceDetails)

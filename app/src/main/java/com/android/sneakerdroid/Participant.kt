@@ -12,7 +12,7 @@ data class Participant (
     var phoneNumber: String,
     var projectCode: String,
     var appVersion: Int,
-    var fcmKey: Int,
+    var fcmKey: Long,
     var deviceDetails: DeviceDetails) : Parcelable
 
 
