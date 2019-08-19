@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">SneakerDroid</string>
+    <string name="fcm_key">"579988450106"</string>
+    <string name="project_code">DROID7</string>
 </resources>

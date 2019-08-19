@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "579988450106",
+    "firebase_url": "https://busara-29537.firebaseio.com",
+    "project_id": "busara-29537",
+    "storage_bucket": "busara-29537.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:579988450106:android:13d99277a14286f0",
+        "android_client_info": {
+          "package_name": "com.android.sneakerdroid"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "579988450106-hg4j2fib8oqobpn2si879gaj6b6hkc9v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCR-7rkEpp_-m8A97Da3X2SZjh4h5LGOPk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "579988450106-hg4j2fib8oqobpn2si879gaj6b6hkc9v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
