@@ -1,6 +1,7 @@
-package com.android.sneakerdroid
+package com.android.sneakerdroid.Model
 
 import android.os.Parcelable
+import com.android.sneakerdroid.Model.DataApps
 import kotlinx.android.parcel.Parcelize
 import kotlinx.serialization.Serializable
 

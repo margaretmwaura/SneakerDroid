@@ -1,4 +1,4 @@
-package com.android.sneakerdroid
+package com.android.sneakerdroid.Model
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

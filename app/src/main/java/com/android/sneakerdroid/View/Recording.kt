@@ -1,11 +1,11 @@
-package com.android.sneakerdroid
+package com.android.sneakerdroid.View
 
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.work.*
-import com.google.gson.Gson
+import com.android.sneakerdroid.presenterpackage.MyWorker
+import com.android.sneakerdroid.R
 import java.util.concurrent.TimeUnit
 
 class Recording : AppCompatActivity() {

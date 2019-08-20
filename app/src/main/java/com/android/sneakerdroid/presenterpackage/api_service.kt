@@ -1,5 +1,9 @@
-package com.android.sneakerdroid
+package com.android.sneakerdroid.presenterpackage
 
+import com.android.sneakerdroid.Model.Participant
+import com.android.sneakerdroid.Model.RegistrationResults
+import com.android.sneakerdroid.Model.SampleResponse
+import com.android.sneakerdroid.Model.UploadRequest
 import kotlinx.coroutines.Deferred
 import retrofit2.Response
 import retrofit2.http.*

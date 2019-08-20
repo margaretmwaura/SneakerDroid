@@ -1,6 +1,7 @@
-package com.android.sneakerdroid
+package com.android.sneakerdroid.presenterpackage
 
 import androidx.work.ListenableWorker
+
 import com.squareup.inject.assisted.dagger2.AssistedModule
 import dagger.Binds
 

@@ -1,9 +1,11 @@
-package com.android.sneakerdroid
+package com.android.sneakerdroid.presenterpackage
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.android.sneakerdroid.Model.Participant
+import com.android.sneakerdroid.Model.RegistrationResults
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

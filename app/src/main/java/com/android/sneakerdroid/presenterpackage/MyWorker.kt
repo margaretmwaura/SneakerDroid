@@ -1,7 +1,11 @@
-package com.android.sneakerdroid
+package com.android.sneakerdroid.presenterpackage
 
 import android.content.Context
 import androidx.work.*
+import com.android.sneakerdroid.Model.Constants
+import com.android.sneakerdroid.Model.DataApps
+import com.android.sneakerdroid.Model.ProbesDatum
+import com.android.sneakerdroid.Model.UploadRequest
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import javax.inject.Inject
@@ -27,8 +31,11 @@ class MyWorker @AssistedInject constructor(
         val sharedPreference =  appContext.getSharedPreferences("PREFERENCE_NAME", Context.MODE_PRIVATE)
         val time = sharedPreference.getString("Apss"," ")
         val gson = Gson()
-        val type = object : TypeToken<ArrayList<String>>() {
-        }.type
+        val type = object : TypeToken<ArrayList<String>>() {}.type
+        val id = sharedPreference.getString("ParticipantId"," ")
+        val accessToken = sharedPreference.getString("AccessToken"," ")
+
+        //Getting of the values
         val apps =  gson.fromJson<ArrayList<String>>(time, type)
         val second = appsData.getAppData(appContext)
         val third = appsData.installedApps(appContext)
@@ -39,12 +46,12 @@ class MyWorker @AssistedInject constructor(
         for(installeNew in installed)
         {
             val system = appsData.checkIfAppIsInstalledApp(third,installeNew)
-            val data = DataApps(installeNew,system,true)
+            val data = DataApps(installeNew, system, true)
 
             val date = Date()
             val dateInstalled = formatter.format(date)
 
-            val probesDatum = ProbesDatum(data,dateInstalled,2)
+            val probesDatum = ProbesDatum(data, dateInstalled, 2)
             probesDatumList.add(probesDatum)
 
         }
@@ -52,16 +59,16 @@ class MyWorker @AssistedInject constructor(
         for(uninstalled in uninstalled)
         {
             val system = appsData.checkIfAppIsInstalledApp(third,uninstalled)
-            val data = DataApps(uninstalled,system,false)
+            val data = DataApps(uninstalled, system, false)
 
             val dateUnistalled = Date()
             val date = formatter.format(dateUnistalled)
-            val probesDatum = ProbesDatum(data,date,2)
+            val probesDatum = ProbesDatum(data, date, 2)
             probesDatumList.add(probesDatum)
 
         }
 
-        val uploadRequest = UploadRequest(500,"ID",probesDatumList)
+        val uploadRequest = UploadRequest(Constants.PROBE, id, probesDatumList)
 
         val response = RetrofitFactory.makeRetrofitService().upLoadRequest(uploadRequest)
 

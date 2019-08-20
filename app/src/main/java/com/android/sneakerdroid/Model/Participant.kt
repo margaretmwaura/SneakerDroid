@@ -1,6 +1,7 @@
-package com.android.sneakerdroid
+package com.android.sneakerdroid.Model
 
 import android.os.Parcelable
+import com.android.sneakerdroid.Model.DeviceDetails
 import kotlinx.android.parcel.Parcelize
 import kotlinx.serialization.Serializable
 
@@ -13,6 +14,7 @@ data class Participant (
     var projectCode: String,
     var appVersion: Int,
     var fcmKey: Long,
-    var deviceDetails: DeviceDetails) : Parcelable
+    var deviceDetails: DeviceDetails
+) : Parcelable
 
 

@@ -1,22 +1,22 @@
-package com.android.sneakerdroid
+package com.android.sneakerdroid.View
 
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.android.sneakerdroid.databinding.ActivityMainBinding
-import kotlinx.android.synthetic.*
 import android.content.pm.PackageManager
-import android.R.attr.versionName
-import android.content.pm.PackageInfo
-import android.R.attr.versionCode
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.android.sneakerdroid.Model.Constants
+import com.android.sneakerdroid.Model.DeviceDetails
+import com.android.sneakerdroid.Model.Participant
+import com.android.sneakerdroid.presenterpackage.AppsData
+import com.android.sneakerdroid.R
+import com.android.sneakerdroid.presenterpackage.RegisterViewModel
 import com.google.gson.Gson
-import java.text.SimpleDateFormat
-import java.util.*
 
 
 class MainActivity : AppCompatActivity()
@@ -29,7 +29,9 @@ class MainActivity : AppCompatActivity()
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding : ActivityMainBinding = DataBindingUtil.setContentView(this,R.layout.activity_main)
+        val binding : ActivityMainBinding = DataBindingUtil.setContentView(this,
+            R.layout.activity_main
+        )
         val ccp = binding.ccp
         ccp.registerCarrierNumberEditText(binding.phoneNumber)
 
@@ -59,10 +61,13 @@ class MainActivity : AppCompatActivity()
             val phonenumber = ccp.fullNumberWithPlus
             val deviceModel = binding.deviceModel.text.toString()
             val deviceType = binding.deviceType.text.toString()
-            val fcmKey = 579988450106
+            val fcmKey = Constants.FCM_KEY
 
-            val deviceDetails = DeviceDetails(deviceModel,deviceType)
-            val participant = Participant(fname,lname,phonenumber,getString(R.string.project_code),versionCode,fcmKey,deviceDetails)
+            val deviceDetails = DeviceDetails(deviceModel, deviceType)
+            val participant = Participant(
+                fname, lname, phonenumber,
+                Constants.project_id, versionCode, fcmKey, deviceDetails
+            )
 
             viewModel.registerUser(participant)
 
@@ -74,7 +79,10 @@ class MainActivity : AppCompatActivity()
                 val accestoken = it.accessToken
                 val id = it._0participantDetails.id
                 Log.d("AccessToken","This is the access token ${accestoken}")
-
+                var editor = sharedPreference.edit()
+                editor.putString("ParticipantId",id)
+                editor.putString("AccessToken",accestoken)
+                editor.commit()
 
 
             }

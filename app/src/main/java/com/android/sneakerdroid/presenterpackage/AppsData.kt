@@ -1,4 +1,4 @@
-package com.android.sneakerdroid
+package com.android.sneakerdroid.presenterpackage
 
 import android.content.ContentValues.TAG
 import android.content.Context
