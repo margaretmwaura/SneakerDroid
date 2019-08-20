@@ -1,40 +1,101 @@
 package com.android.sneakerdroid
 
-import android.content.ContentValues
 import android.content.Context
-import android.content.pm.ApplicationInfo
-import android.content.pm.PackageManager
-import android.util.Log
-import androidx.work.ListenableWorker
-import androidx.work.Worker
-import androidx.work.WorkerFactory
-import androidx.work.WorkerParameters
+import androidx.work.*
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import javax.inject.Inject
 import javax.inject.Provider
+import com.google.gson.reflect.TypeToken
+import com.google.gson.Gson
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class MyWorker @AssistedInject constructor(
     @Assisted private val appContext: Context,
     @Assisted private val params: WorkerParameters,
     private val appsData: AppsData
-   ) : Worker(appContext, params) {
+   ) : Worker(appContext, params)
+{
 
-    override fun doWork(): Result {
-
+    override fun doWork(): Result
+    {
+        var outputData : Data? = null
+        val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ")
+        val probesDatumList  = ArrayList<ProbesDatum>()
         val sharedPreference =  appContext.getSharedPreferences("PREFERENCE_NAME", Context.MODE_PRIVATE)
-        val time = sharedPreference.getString("EventTime"," ")
-        Log.d("SavedData","This is the saved data pal ${time}")
+        val time = sharedPreference.getString("Apss"," ")
+        val gson = Gson()
+        val type = object : TypeToken<ArrayList<String>>() {
+        }.type
+        val apps =  gson.fromJson<ArrayList<String>>(time, type)
+        val second = appsData.getAppData(appContext)
+        val third = appsData.installedApps(appContext)
 
-        appsData.getAppData(appContext)
-        appsData.installedApps(appContext)
-        return Result.success()
+        val installed = appsData.checkForInstalledApp(apps,second)
+        val uninstalled = appsData.checkForUnistalledApp(second,apps)
+
+        for(installeNew in installed)
+        {
+            val system = appsData.checkIfAppIsInstalledApp(third,installeNew)
+            val data = DataApps(installeNew,system,true)
+
+            val date = Date()
+            val dateInstalled = formatter.format(date)
+
+            val probesDatum = ProbesDatum(data,dateInstalled,2)
+            probesDatumList.add(probesDatum)
+
+        }
+
+        for(uninstalled in uninstalled)
+        {
+            val system = appsData.checkIfAppIsInstalledApp(third,uninstalled)
+            val data = DataApps(uninstalled,system,false)
+
+            val dateUnistalled = Date()
+            val date = formatter.format(dateUnistalled)
+            val probesDatum = ProbesDatum(data,date,2)
+            probesDatumList.add(probesDatum)
+
+        }
+
+        val uploadRequest = UploadRequest(500,"ID",probesDatumList)
+
+        val response = RetrofitFactory.makeRetrofitService().upLoadRequest(uploadRequest)
+
+
+        if(response.isSuccessful)
+        {
+            val sampleResponse = response.body()
+            outputData = createOutputData(sampleResponse!!.message)
+        }
+        else
+        {
+            outputData = createOutputData("Fail")
+        }
+
+        var editor = sharedPreference.edit()
+        val gsonSave = Gson()
+        val json = gsonSave.toJson(apps)
+         editor.putString("Apss",json)
+         editor.commit()
+
+
+
+        return Result.success(outputData!!)
     }
 
 
     @AssistedInject.Factory
     interface Factory : ChildWorkerFactory
+}
+
+fun createOutputData(firstData: String): Data {
+    return Data.Builder()
+        .putString("Message" , firstData)
+        .build()
 }
 
 interface ChildWorkerFactory {

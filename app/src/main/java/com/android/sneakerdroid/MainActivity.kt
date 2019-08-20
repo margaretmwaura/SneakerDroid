@@ -10,9 +10,11 @@ import android.content.pm.PackageManager
 import android.R.attr.versionName
 import android.content.pm.PackageInfo
 import android.R.attr.versionCode
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.google.gson.Gson
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -32,15 +34,15 @@ class MainActivity : AppCompatActivity()
         ccp.registerCarrierNumberEditText(binding.phoneNumber)
 
 
-        val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ")
-        val fromatterDate = SimpleDateFormat("EEEE")
-
-        //This is for the current date date
-        val date = Date()
-        val fromDate = formatter.format(date)
-
-
-        Log.d("Date","We are getting the date ${fromDate}")
+        //Getting all the apps
+        val appsData = AppsData()
+        val apps = appsData.getAppData(this)
+        val sharedPreference =  getSharedPreferences("PREFERENCE_NAME", Context.MODE_PRIVATE)
+        var editor = sharedPreference.edit()
+        val gson = Gson()
+        val json = gson.toJson(apps)
+        editor.putString("Apss",json)
+        editor.commit()
 
         binding.button.setOnClickListener {
 

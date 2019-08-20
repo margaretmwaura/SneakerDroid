@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @Parcelize
-data class ProbesDatum (var data: Data,
+data class ProbesDatum (var data: DataApps,
                         var loggedTime: String,
-                        var probe: String) : Parcelable
+                        var probe: Int) : Parcelable
 

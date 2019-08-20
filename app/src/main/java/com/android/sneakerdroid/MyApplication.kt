@@ -9,7 +9,10 @@ class MyApplicationApplication : Application()
     override fun onCreate() {
         super.onCreate()
         val factory: SampleWorkerFactory = DaggerSampleComponent.create().factory()
+
         WorkManager.initialize(this, Configuration.Builder().setWorkerFactory(factory).build())
+
+
 
     }
 

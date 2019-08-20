@@ -6,8 +6,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @Parcelize
-data class Data (var name: String,
-                 var isSystem: Boolean,
-                 var isInstalled: Boolean) : Parcelable
+data class DataApps (var name: String,
+                     var isSystem: Boolean,
+                     var isInstalled: Boolean) : Parcelable
 
 
