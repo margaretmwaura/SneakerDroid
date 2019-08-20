@@ -13,6 +13,8 @@ import android.R.attr.versionCode
 import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class MainActivity : AppCompatActivity()
@@ -29,6 +31,16 @@ class MainActivity : AppCompatActivity()
         val ccp = binding.ccp
         ccp.registerCarrierNumberEditText(binding.phoneNumber)
 
+
+        val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ")
+        val fromatterDate = SimpleDateFormat("EEEE")
+
+        //This is for the current date date
+        val date = Date()
+        val fromDate = formatter.format(date)
+
+
+        Log.d("Date","We are getting the date ${fromDate}")
 
         binding.button.setOnClickListener {
 
@@ -58,7 +70,11 @@ class MainActivity : AppCompatActivity()
         viewModel.response.observe(this, Observer {
             it.let {
                 val accestoken = it.accessToken
-                Log.d("AccessToke","This is the access token ${accestoken}")
+                val id = it._0participantDetails.id
+                Log.d("AccessToken","This is the access token ${accestoken}")
+
+
+
             }
         })
 

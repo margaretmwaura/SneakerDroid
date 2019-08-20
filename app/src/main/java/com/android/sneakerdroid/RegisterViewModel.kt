@@ -38,7 +38,8 @@ class RegisterViewModel  : ViewModel()
      */
     public fun registerUser(participant: Participant) {
         coroutineScope.launch {
-            // Get the Deferred object for our Retrofit request
+
+
             val participant = RetrofitFactory.makeRetrofitService().getEventTypeData(participant)
             try {
                 // Await the completion of our Retrofit request
