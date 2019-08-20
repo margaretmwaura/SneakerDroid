@@ -27,17 +27,11 @@ class RegisterViewModel  : ViewModel()
     // the Coroutine runs using the Main (UI) dispatcher
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main )
 
-    /**
-     * Call getMarsRealEstateProperties() on init so we can display status immediately.
-     */
     init {
 
     }
 
-    /**
-     * Sets the value of the response LiveData to the Mars API status or the successful number of
-     * Mars properties retrieved.
-     */
+
     public fun registerUser(participant: Participant) {
         coroutineScope.launch {
 

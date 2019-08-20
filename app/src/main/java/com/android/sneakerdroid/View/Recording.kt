@@ -2,6 +2,7 @@ package com.android.sneakerdroid.View
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.work.*
 import com.android.sneakerdroid.presenterpackage.MyWorker
@@ -29,7 +30,7 @@ class Recording : AppCompatActivity() {
             .observe(this, Observer { workInfo ->
                 if (workInfo != null && workInfo.state == WorkInfo.State.SUCCEEDED)
                 {
-
+                    workInfo.outputData
                 }
             })
     }
