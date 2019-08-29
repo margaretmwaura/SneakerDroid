@@ -1,6 +1,7 @@
 package com.android.sneakerdroid.presenterpackage
 
 import android.content.Context
+import android.util.Log
 import androidx.work.*
 import com.android.sneakerdroid.Model.Constants
 import com.android.sneakerdroid.Model.DataApps
@@ -12,8 +13,16 @@ import javax.inject.Inject
 import javax.inject.Provider
 import com.google.gson.reflect.TypeToken
 import com.google.gson.Gson
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
+import kotlinx.io.IOException
+import okhttp3.Interceptor
+import okhttp3.OkHttpClient
+import okhttp3.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 
 class MyWorker @AssistedInject constructor(
@@ -22,9 +31,9 @@ class MyWorker @AssistedInject constructor(
     private val appsData: AppsData
    ) : Worker(appContext, params)
 {
-
     override fun doWork(): Result
     {
+        Log.d("Worker","Worker started")
         var outputData : Data? = null
         val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ")
         val probesDatumList  = ArrayList<ProbesDatum>()
@@ -54,6 +63,7 @@ class MyWorker @AssistedInject constructor(
             val probesDatum = ProbesDatum(data, dateInstalled, 2)
             probesDatumList.add(probesDatum)
 
+
         }
 
         for(uninstalled in uninstalled)
@@ -68,10 +78,27 @@ class MyWorker @AssistedInject constructor(
 
         }
 
-        val uploadRequest = UploadRequest(Constants.PROBE, id, probesDatumList)
+        var jsonProbesDatumDetails = gson.toJson(probesDatumList)
 
-        val response = RetrofitFactory.makeRetrofitService().upLoadRequest(uploadRequest)
+        val httpClient = OkHttpClient.Builder()
 
+        httpClient.addInterceptor(object : Interceptor {
+            @Throws(IOException::class)
+            override fun intercept(chain: Interceptor.Chain): Response
+            {
+                val request = chain.request().newBuilder().addHeader("Authorization Token ", accessToken).build()
+                return chain.proceed(request)
+            }
+        })
+        val retrofit = Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                     .addConverterFactory(GsonConverterFactory.create())
+                     .addCallAdapterFactory(CoroutineCallAdapterFactory())
+                     .client(httpClient.build())
+                     .build()
+                    .create(api_service::class.java)
+
+        val response = retrofit.upLoadRequest(Constants.PROBE,id,jsonProbesDatumDetails)
 
         if(response.isSuccessful)
         {

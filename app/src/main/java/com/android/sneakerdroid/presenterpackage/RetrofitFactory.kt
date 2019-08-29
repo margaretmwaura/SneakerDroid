@@ -4,7 +4,7 @@ import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterF
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-const val BASE_URL = "http://interviews.busaracenterlab.org"
+const val BASE_URL = "http://interviews.busaracenterlab.org/"
 object RetrofitFactory {
 
     fun makeRetrofitService(): api_service {

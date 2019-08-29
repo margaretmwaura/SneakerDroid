@@ -6,8 +6,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @Parcelize
-data class DeviceDetails (var deviceModel: String,
-                          var deviceType: String
+data class DeviceDetails (var device_model: String,
+                          var device_type: String
                           ):Parcelable
 
 
